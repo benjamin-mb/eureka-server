@@ -15,16 +15,18 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
     service-url:
-      defaultZone: http://${SPRING_SECURITY_USER_NAME:admin}:${SPRING_SECURITY_USER_PASSWORD:admin123}@localhost:8761/eureka/
+      defaultZone: http://${SPRING_SECURITY_USER_NAME:admin}:${SPRING_SECURITY_USER_PASSWORD:admin123}@eureka-server.arka.local:8761/eureka/
 
   instance:
-    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
-    prefer-ip-address: true
+    hostname: eureka-server.arka.local
+    prefer-ip-address: false
+    ip-address: eureka-server.arka.local
     lease-renewal-interval-in-seconds: 30
     lease-expiration-duration-in-seconds: 90
 
   server:
-    enable-self-preservation: false  # Para desarrollo en AWS
+    enable-self-preservation: true
+    eviction-interval-timer-in-ms: 15000
 
 management:
   endpoints:
@@ -33,10 +35,10 @@ management:
         include: health,info,metrics
   endpoint:
     health:
-      show-details: always
+      show-details: when-authorized
 
 logging:
   level:
-    root: INFO
+    root: WARN
     com.netflix.eureka: INFO
     com.netflix.discovery: INFO
